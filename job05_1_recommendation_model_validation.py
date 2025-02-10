@@ -12,7 +12,7 @@ from PyQt5.QtCore import QStringListModel
 from PyQt5.QtCore import Qt
 
 
-from_window = uic.loadUiType('./movie_recommendation.ui')[0]
+from_window = uic.loadUiType('./namu_recommendation.ui')[0]
 
 
 class Exam(QWidget, from_window):
@@ -20,14 +20,16 @@ class Exam(QWidget, from_window):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.Tfidf_matrix = mmread('./models/Tfidf_movie_review.mtx').tocsr()
-        with open('./models/tfidf.pickle', 'rb') as f:
+        self.Tfidf_matrix = mmread('./models/Tfidf_namuwiki_model_validation.mtx').tocsr()
+        with open('./models/tfidf_model_validation.pickle', 'rb') as f:
             self.Tfidf = pickle.load(f)
-        self.embedding_model = Word2Vec.load('./models/word2vec_movie_review.model')
+        print("Loading Word2Vec model...")
+        self.embedding_model = Word2Vec.load('./models/word2vec_namuwiki_model_validation.model')
+        print("Word2Vec model loaded successfully!")
 
 
-        self.df_reviews = pd.read_csv('./crawling_data/cleaned_reviews.csv')
-        self.titles = list(self.df_reviews.titles)
+        self.df_namu = pd.read_csv('./data/namuwiki_cleaned_data_model_validation.csv')
+        self.titles = list(self.df_namu.title)
         self.titles.sort()
         # self.cb_title.addItem('Test01')
         for title in self.titles:
@@ -35,7 +37,7 @@ class Exam(QWidget, from_window):
 
         # 자동완성 코드
         model = QStringListModel()
-        model.setStringList((self.titles))
+        model.setStringList(self.titles)
         completer = QCompleter()
         completer.setModel(model)
         self.le_keyword.setCompleter(completer)
@@ -51,6 +53,7 @@ class Exam(QWidget, from_window):
             recommendation = self.recommendation_by_title(keyword)
         else:
             recommendation = self.recommendation_by_keyword(keyword)
+
         # recommendation = self.recommendation_by_keyword(keyword)
         if recommendation:
             self.lbl_recommendation.setText(recommendation)
@@ -63,9 +66,9 @@ class Exam(QWidget, from_window):
         self.lbl_recommendation.setText(recommendation)
 
 
-    def recommendation_by_title(self, title):
-        movie_idx = self.df_reviews[self.df_reviews.titles == title].index[0]
-        cosine_sim = linear_kernel(self.Tfidf_matrix[movie_idx], self.Tfidf_matrix)
+    def recommendation_by_title(self, tlt):
+        namu_idx = self.df_namu[self.df_namu.title == tlt].index[0]
+        cosine_sim = linear_kernel(self.Tfidf_matrix[namu_idx], self.Tfidf_matrix)
         recommendation = self.getRecommendation(cosine_sim)
         recommendation = '\n'.join(list(recommendation))
         return recommendation
@@ -74,7 +77,7 @@ class Exam(QWidget, from_window):
         try:
             sim_word = self.embedding_model.wv.most_similar(keyword, topn = 10)
         except:
-            self.lbl_recommend.setText("제가 모르는 단어에요.")
+            self.lbl_recommendation.setText("제가 모르는 단어에요.")
             return 0
         words = [keyword]
         for word, _ in sim_word:
@@ -97,8 +100,8 @@ class Exam(QWidget, from_window):
         simScore = list(enumerate(cosine_sim[-1]))
         simScore = sorted(simScore, key=lambda x: x[1], reverse=True)
         simScore = simScore[:11]
-        movieIdx = [i[0] for i in simScore]
-        recmovieList = self.df_reviews.iloc[movieIdx, 0]
+        wikiIdx = [i[0] for i in simScore]
+        recmovieList = self.df_namu.iloc[wikiIdx, 0]
         return recmovieList[1:11]
 
 

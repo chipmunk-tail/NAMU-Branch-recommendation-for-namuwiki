@@ -17,7 +17,7 @@ Tfidf = TfidfVectorizer(sublinear_tf= True)
 Tfidf_matrix = Tfidf.fit_transform(df_namu.text)
 print(Tfidf_matrix.shape)
 
-with open('./models/tfidf.pickle', 'wb') as f:
+with open('./models/tfidf_model_validation.pickle', 'wb') as f:
     pickle.dump(Tfidf, f)
 
 mmwrite('./models/Tfidf_namuwiki_model_validation.mtx', Tfidf_matrix)
