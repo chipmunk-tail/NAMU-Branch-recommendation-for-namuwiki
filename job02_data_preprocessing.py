@@ -8,6 +8,7 @@
 import json
 import pandas as pd
 from konlpy.tag import Okt
+import numpy as np
 import re
 
 # 데이터 위치
@@ -38,12 +39,6 @@ for txt in df.text:
     txt = re.sub(r'\n', ' ', txt)
     txt = re.sub(r'\r', ' ', txt)
 
-    start_idx = txt.find("== 개요 ==")               # 개요를 찾는다
-    if start_idx == -1:                             # 개요가 없다면
-        txt = ''                                    # text를 null값으로 대입한다.
-    end_idx = txt.find("==", (start_idx + 8))       # 개요 끝부분을 찾는다. 두번째 매개변수는 start 지점
-    txt = txt[start_idx : end_idx]
-
     txt = re.sub('[^가-힣]', ' ', txt)
     print(txt)
 
@@ -54,6 +49,7 @@ for txt in df.text:
     df_token = df_token[(df_token['class'] == 'Noun') |
                         (df_token['class'] == 'Verb') |
                         (df_token['class'] == 'Adjective')]
+    df_token['word'] = df_token['word'].replace('되어다', '되다')
     print(df_token)
 
     words = []
@@ -66,10 +62,16 @@ for txt in df.text:
     print(cleand_sentences)
 
 
+df.loc[:, 'text'] = cleand_sentences
+df.loc[:, 'text'] = df['text'].replace('', np.nan)  # 빈 문자열을 NaN으로 변경
+df.loc[:, 'text'] = df['text'].apply(lambda x: np.nan if isinstance(x, str) and x.strip() == '' else x)
+df.dropna(subset=['text'], inplace=True)
 
-df.text = cleand_sentences
-df.dropna(inplace = True)
-df.to_csv('./crawling_data/namuwiki_cleaned_data.csv', index = False)
+print(f"cleand_sentences 행의 수: {len(cleand_sentences)}")
+print(f"df_modify 행의 수: {len(df)}")
+print(df.head())
+
+df.to_csv('./data/namuwiki_cleaned_data.csv', index = False)
 
 
 
