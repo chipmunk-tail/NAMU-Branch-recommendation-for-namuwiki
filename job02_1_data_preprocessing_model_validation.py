@@ -81,7 +81,7 @@ print(f"cleand_sentences 행의 수: {len(cleand_sentences)}")
 print(f"df_modify 행의 수: {len(df)}")
 print(df.head())
 
-df.to_csv('./data/namuwiki_cleaned_data.csv', index = False)
+df.to_csv('./data/namuwiki_cleaned_data_model_validation.csv', index = False)
 
 
 # 867 => 582
