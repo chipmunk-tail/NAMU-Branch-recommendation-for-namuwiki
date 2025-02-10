@@ -8,11 +8,12 @@
 import json
 import pandas as pd
 from konlpy.tag import Okt
+import numpy as np
 import re
 
 # 데이터 위치
-data_path = './data/namuwiki_downsize.json'
-clean_data_path = './data/namuwiki_cleand_data.csv'
+data_path = './data/namuwiki_downsize_model_validation.json'
+clean_data_path = './data/namuwiki_cleand_data_model_validation.csv'
 
 # json 파일 열기
 with open(data_path, "r", encoding="utf-8") as f:
@@ -21,9 +22,12 @@ with open(data_path, "r", encoding="utf-8") as f:
 # json 파일로 데이터프레임 생성
 df_raw = pd.DataFrame(data)
 
-# 원하는 데이터 컬럼만 추출
-df = df_raw[['title', 'text']]
+# 원하는 데이터 컬럼만 추출해서 복사
+df = df_raw[['title', 'text']].copy()
 print(df.head())
+print(df.title[0])
+print(df.text[0])
+
 
 # 데이터 전처리
 df_stopwords = pd.read_csv('./format_files/stopwords_kor.csv')
@@ -40,11 +44,13 @@ for txt in df.text:
 
     start_idx = txt.find("== 개요 ==")               # 개요를 찾는다
     if start_idx == -1:                             # 개요가 없다면
-        txt = ''                                    # text를 null값으로 대입한다.
-    end_idx = txt.find("==", (start_idx + 8))       # 개요 끝부분을 찾는다. 두번째 매개변수는 start 지점
-    txt = txt[start_idx : end_idx]
+        cleand_sentences.append(np.nan)             # nan값을 넣는다.
+        continue
+    else:
+        end_idx = txt.find("==", (start_idx + 8))  # 개요 끝부분을 찾는다. 두번째 매개변수는 start 지점
+        txt = txt[start_idx: end_idx]
 
-    txt = re.sub('[^가-힣]', ' ', txt)
+        txt = re.sub('[^가-힣]', ' ', txt)
     print(txt)
 
     tokened_text = okt.pos(txt, stem=True)
@@ -67,11 +73,15 @@ for txt in df.text:
 
 
 
-df.text = cleand_sentences
+# df.text = cleand_sentences
+df.loc[:, 'text'] = cleand_sentences
 df.dropna(inplace = True)
-df.to_csv('./crawling_data/namuwiki_cleaned_data.csv', index = False)
+
+print(f"cleand_sentences 행의 수: {len(cleand_sentences)}")
+print(f"df_modify 행의 수: {len(df)}")
+print(df.head())
+
+df.to_csv('./data/namuwiki_cleaned_data.csv', index = False)
 
 
-
-
-
+# 867 => 582
