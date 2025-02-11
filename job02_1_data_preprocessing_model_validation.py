@@ -1,9 +1,10 @@
+# 나무위키
 #
-#
-# downsizing 된 json 파일을 불려들어 전처리 후 csv 파일로 저장하는 단계
+# 축소된 json 파일을 전처리 후 csv 파일로 저장하는 단계
 # 해당 json 파일은 "namespace", "title", "text", "contributors" 데이터 컬럼을 포함하고 있음
-# 필요한 데이터 컬럼은 "title"과 "text"이니 해당 데이터 컬럼만 추출
-#
+# 필요한 데이터 컬럼은 "title"과 "text"이니 해당 데이터 컬럼만 추출 후 전처리
+# 필요없는 문자, 2글자 미만 단어, 100토큰 미만의 데이터는 제거한다.
+
 
 import json
 import pandas as pd
@@ -11,12 +12,13 @@ from konlpy.tag import Okt
 import numpy as np
 import re
 
-# 데이터 위치
-data_path = './data/namuwiki_downsize_model_validation.json'
-clean_data_path = './data/namuwiki_cleand_data_model_validation.csv'
+# 데이터 경로 지정
+downsize_json_path = './data/namuwiki_downsize_model_validation.json'
+cleand_csv_path = './data/namuwiki_cleand_data_model_validation.csv'
+stopword_path = './format_files/stopwords_kor.csv'
 
 # json 파일 열기
-with open(data_path, "r", encoding="utf-8") as f:
+with open(downsize_json_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
 # json 파일로 데이터프레임 생성
@@ -30,29 +32,17 @@ print(df.text[0])
 
 
 # 데이터 전처리
-df_stopwords = pd.read_csv('./format_files/stopwords_kor.csv')
+df_stopwords = pd.read_csv(stopword_path)
 stopwords = list(df_stopwords['stopword_kor'])
 
 okt = Okt()
 cleand_sentences = []
 
 for txt in df.text:
-
-    # 개행문자 제거
+    # 쓸모없는 문자 변환
     txt = re.sub(r'\n', ' ', txt)
     txt = re.sub(r'\r', ' ', txt)
     txt = re.sub('[^가-힣]', ' ', txt)
-
-    # start_idx = txt.find("== 개요 ==")               # 개요를 찾는다
-    # if start_idx == -1:                             # 개요가 없다면
-    #     cleand_sentences.append(np.nan)             # nan값을 넣는다.
-    #     continue
-    # else:
-    #     end_idx = txt.find("==", (start_idx + 8))  # 개요 끝부분을 찾는다. 두번째 매개변수는 start 지점
-    #     txt = txt[start_idx: end_idx]
-    #
-    #     txt = re.sub('[^가-힣]', ' ', txt)
-    # print(txt)
 
     tokened_text = okt.pos(txt, stem=True)
     print(tokened_text)
@@ -61,6 +51,8 @@ for txt in df.text:
     df_token = df_token[(df_token['class'] == 'Noun') |
                         (df_token['class'] == 'Verb') |
                         (df_token['class'] == 'Adjective')]
+
+    # 되었다 => 되어다 로 변해서 토큰화가 되는 문제 제거
     df_token['word'] = df_token['word'].replace('되어다', '되다')
     print(df_token)
 
@@ -74,23 +66,22 @@ for txt in df.text:
     print(cleand_sentences)
 
 
-
-# df.text = cleand_sentences
-
-# df.loc[:, 'text'] = cleand_sentences
-# df['text'].replace('', np.nan, inplace=True)  # 빈 문자열을 NaN으로 변경
-# df.dropna(inplace = True)
-
+# cleand_sentences를 데이터 프레임에 대입
 df.loc[:, 'text'] = cleand_sentences
-df.loc[:, 'text'] = df['text'].replace('', np.nan)  # 빈 문자열을 NaN으로 변경
+
+# 빈 문자열을 NaN으로 변경
+df.loc[:, 'text'] = df['text'].replace('', np.nan)
 df.loc[:, 'text'] = df['text'].apply(lambda x: np.nan if isinstance(x, str) and x.strip() == '' else x)
-df.dropna(subset=['text'], inplace=True)
+
+# 토큰수가 100개 미만인 데이터는 삭제
+df['word_count'] = df['text'].apply(lambda x: len(str(x).split()))
+df_filtered = df[df['word_count'] > 100].copy()
+
+df_filtered.dropna(subset=['text'], inplace=True)
+df_filtered.drop(columns=['word_count'], inplace=True)
 
 print(f"cleand_sentences 행의 수: {len(cleand_sentences)}")
 print(f"df_modify 행의 수: {len(df)}")
 print(df.head())
 
-df.to_csv('./data/namuwiki_cleaned_data_model_validation.csv', index = False)
-
-
-# 867 => 582
+df_filtered.to_csv(cleand_csv_path, index = False)

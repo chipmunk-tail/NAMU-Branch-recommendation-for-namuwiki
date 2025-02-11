@@ -11,6 +11,11 @@ from matplotlib import font_manager, rc
 import matplotlib as mpl
 import os
 
+# 데이터 경로 지정
+model_path = './models/word2vec_namuwiki_model_validation.model'
+key_word = '응급의료정보센터'
+
+
 # CPU 코어 갯수 지정
 os.environ["LOKY_MAX_CPU_COUNT"] = "4"  # 사용 가능한 CPU 개수로 조정
 
@@ -20,8 +25,8 @@ font_name = font_manager.FontProperties(fname = font_path).get_name()
 mpl.rcParams['axes.unicode_minus'] = False
 rc('font', family = font_name)
 
-embedding_model = Word2Vec.load('./models/word2vec_namuwiki_model_validation.model')
-key_word = '응급의료정보센터'
+embedding_model = Word2Vec.load(model_path)
+# key_word = '응급의료정보센터'
 # sim_word = embedding_model.wv.most_similar(key_word, topn = 10)
 # print(sim_word)
 

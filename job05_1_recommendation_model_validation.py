@@ -1,3 +1,6 @@
+# 나무위키
+#
+# PyQt5를 이용해서 UI로 구현하는 코드
 
 
 import sys
@@ -12,7 +15,15 @@ from PyQt5.QtCore import QStringListModel
 from PyQt5.QtCore import Qt
 
 
-from_window = uic.loadUiType('./namu_recommendation.ui')[0]
+# 데이터 경로 지정
+ui_path = './namu_recommendation.ui'
+mtx_path = './models/Tfidf_namuwiki_model_validation.mtx'
+pickle_path = './models/tfidf_model_validation.pickle'
+model_path = './models/word2vec_namuwiki_model_validation.model'
+cleand_csv_path = './data/namuwiki_cleaned_data_model_validation.csv'
+
+
+from_window = uic.loadUiType(ui_path)[0]
 
 
 class Exam(QWidget, from_window):
@@ -20,15 +31,15 @@ class Exam(QWidget, from_window):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.Tfidf_matrix = mmread('./models/Tfidf_namuwiki_model_validation.mtx').tocsr()
-        with open('./models/tfidf_model_validation.pickle', 'rb') as f:
+        self.Tfidf_matrix = mmread(mtx_path).tocsr()
+        with open(pickle_path, 'rb') as f:
             self.Tfidf = pickle.load(f)
         print("Loading Word2Vec model...")
-        self.embedding_model = Word2Vec.load('./models/word2vec_namuwiki_model_validation.model')
+        self.embedding_model = Word2Vec.load(model_path)
         print("Word2Vec model loaded successfully!")
 
 
-        self.df_namu = pd.read_csv('./data/namuwiki_cleaned_data_model_validation.csv')
+        self.df_namu = pd.read_csv(cleand_csv_path)
         self.titles = list(self.df_namu.title)
         self.titles.sort()
         # self.cb_title.addItem('Test01')
