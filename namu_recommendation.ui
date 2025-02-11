@@ -53,9 +53,9 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>140</y>
+     <y>430</y>
      <width>541</width>
-     <height>501</height>
+     <height>211</height>
     </rect>
    </property>
    <property name="font">
@@ -82,7 +82,10 @@
     </font>
    </property>
    <property name="text">
-    <string>키워드를 입력하세요</string>
+    <string/>
+   </property>
+   <property name="clearButtonEnabled">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="btn_recommend">
@@ -101,6 +104,63 @@
    </property>
    <property name="text">
     <string>추천</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lb_overview">
+   <property name="geometry">
+    <rect>
+     <x>53</x>
+     <y>160</y>
+     <width>541</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>390</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>관련 문서</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>120</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>문서 내용</string>
    </property>
   </widget>
  </widget>
