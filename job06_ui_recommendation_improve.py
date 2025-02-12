@@ -35,8 +35,10 @@ class Exam(QWidget, from_window):
         self.df_overview = pd.read_csv(overview_path)
         self.titles = list(self.df_namu.title)
         self.titles.sort()
+        self.cb_title.addItem("")               # combo box 첫번째 선택창을 빈 칸으로 세팅
         for title in self.titles:
             self.cb_title.addItem(title)
+        self.cb_title.setCurrentIndex(0)        # combo box 첫 번째 선택
 
         # 자동완성 코드
         model = QStringListModel()
@@ -57,7 +59,7 @@ class Exam(QWidget, from_window):
 
 
     def initUI(self):
-        self.setWindowTitle("QLineEdit 자동 삭제 예제")
+        self.setWindowTitle("NAMU-Branch 나무위키 문서 자동 추천 프로그램")
 
         self.default_text = "여기에 입력하세요"  # 기본 텍스트
         self.le_keyword.setText(self.default_text)
