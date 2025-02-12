@@ -13,9 +13,9 @@ import pickle
 
 
 # 데이터 경로 지정
-cleand_csv_path = './data/namuwiki_cleaned_data_model_validation.csv'
-pickle_path = './models/tfidf_model_validation.pickle'
-mtx_path = './models/Tfidf_namuwiki_model_validation.mtx'
+cleand_csv_path = '../data/namuwiki_cleaned_data_model_validation.csv'
+pickle_path = '../models/tfidf_model_validation.pickle'
+mtx_path = '../models/Tfidf_namuwiki_model_validation.mtx'
 
 
 df_namu = pd.read_csv(cleand_csv_path)

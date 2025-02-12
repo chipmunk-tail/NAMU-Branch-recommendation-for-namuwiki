@@ -8,8 +8,8 @@
 import json
 
 # 데이터 경로 지정
-original_json_path = './data/namuwiki_downsize.json'
-downsize_json_path = './data/namuwiki_downsize_model_validation.json'
+original_json_path = '../data/namuwiki_downsize.json'
+downsize_json_path = '../data/namuwiki_downsize_model_validation.json'
 
 # 변환할 json 파일을 읽어온다.
 with open(original_json_path, 'r', encoding='utf-8') as json_file:

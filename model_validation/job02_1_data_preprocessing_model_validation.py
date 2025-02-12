@@ -13,9 +13,9 @@ import numpy as np
 import re
 
 # 데이터 경로 지정
-downsize_json_path = './data/namuwiki_downsize_model_validation.json'
+downsize_json_path = '../data/namuwiki_downsize_model_validation.json'
 cleand_csv_path = './data/namuwiki_cleand_data_model_validation.csv'
-stopword_path = './format_files/stopwords_kor.csv'
+stopword_path = '../format_files/stopwords_kor.csv'
 
 # json 파일 열기
 with open(downsize_json_path, "r", encoding="utf-8") as f:

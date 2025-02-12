@@ -8,8 +8,8 @@ import pandas as pd
 from gensim.models import Word2Vec
 
 # 데이터 경로 지정
-cleand_csv_path = './data/namuwiki_cleaned_data_model_validation.csv'
-model_path = './models/word2vec_namuwiki_model_validation.model'
+cleand_csv_path = '../data/namuwiki_cleaned_data_model_validation.csv'
+model_path = '../models/word2vec_namuwiki_model_validation.model'
 
 df_namu = pd.read_csv(cleand_csv_path)
 df_namu.info()

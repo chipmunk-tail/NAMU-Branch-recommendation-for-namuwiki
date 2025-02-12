@@ -16,11 +16,11 @@ from PyQt5.QtCore import Qt
 
 
 # 데이터 경로 지정
-ui_path = './namu_recommendation.ui'
-mtx_path = './models/Tfidf_namuwiki_model_validation.mtx'
-pickle_path = './models/tfidf_model_validation.pickle'
-model_path = './models/word2vec_namuwiki_model_validation.model'
-cleand_csv_path = './data/namuwiki_cleaned_data_model_validation.csv'
+ui_path = '../namu_recommendation.ui'
+mtx_path = '../models/Tfidf_namuwiki_model_validation.mtx'
+pickle_path = '../models/tfidf_model_validation.pickle'
+model_path = '../models/word2vec_namuwiki_model_validation.model'
+cleand_csv_path = '../data/namuwiki_cleaned_data_model_validation.csv'
 
 
 from_window = uic.loadUiType(ui_path)[0]
