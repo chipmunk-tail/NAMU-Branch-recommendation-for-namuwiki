@@ -28,7 +28,38 @@ TF-IDF 실습을 하면서 위의 아쉬웠던 경험을 개선하는 프로그�
 
 ## 디렉토리 구조
 ```commandline
-
+C:.
+├─data
+│  ├─raw_data
+│  │  └─namuwiki_20210301.json
+│  ├─namuwiki_downsize.json
+│  └─namuwiki_cleand_data.csv
+├─format_files
+│  ├─malgum.ttf
+│  └─stopwords_kor.csv
+├─models
+│  ├─tfidf.pickle
+│  ├─Tfidf_namuwiki.mtx
+│  └─word2vec_namuwiki.model
+├─src_img
+│  └─image_directory
+├─job01_resize_data.py
+├─job02_data_preprocessing.py
+├─job03_TF-IDF.py
+├─job04_word2vec.py
+├─job05_recommendation.py
+├─job06_ui_recommendation_improve.py
+├─job_sub_visualization_for_data_management_model_validation.py
+├─job_sub_wordcloud_for_data_management_model_validation.py
+├─namu_recommendation.ui
+├─README.md
+├─requirements.txt
+└─model_validation
+   ├─job01_1_resize_data_model_validation.py
+   ├─job02_1_data_preprocessing_model_validation.py
+   ├─job03_1_TF-IDF_model_validation.py
+   ├─job04_1_word2vec_model_validation.py
+   └─job05_1_recommendation_model_validation.py
 ```
  
 
