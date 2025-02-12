@@ -24,11 +24,14 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <family>Candara</family>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="text">
-    <string>현재 읽고있는 문서는?</string>
+    <string>NAMU-Branch</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -60,7 +63,8 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>12</pointsize>
+     <family>맑은 고딕</family>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -117,7 +121,8 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>12</pointsize>
+     <family>맑은 고딕</family>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -138,7 +143,10 @@
    </property>
    <property name="font">
     <font>
+     <family>맑은 고딕</family>
      <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="text">
@@ -156,7 +164,10 @@
    </property>
    <property name="font">
     <font>
+     <family>맑은 고딕</family>
      <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="text">
