@@ -7,7 +7,6 @@
 
 
 TF-IDF와 Word2Vec 임베딩을 이용해 추천 알고리즘을 구축하였고,
-
 PyQt5를 이용해 UI를 제작해 시각화를 진행했습니다.
 
 <img src="src_img/Project_UI.png" alt="NAMU-Branch" width="500">
